@@ -27,8 +27,8 @@ event Ended(string wins, address winner);
     bool public started;
     bool public ended;
     uint public startingPrice;
-    uint startingTime= block.timestamp;
-    uint endingBy= block.timestamp + 1 days;
+    uint endingBy;
+    uint Started;
     uint public Time_left;
     address public highestBidder;
     uint public highestBid;
@@ -48,6 +48,8 @@ _;
             nftId= _nftId;
 
      seller=msg.sender;
+      Started= block.timestamp;
+     endingBy= Started + 3 days;
         }
 function Start() external onlyOwner{
     require(started==false, "Auctioning has started");
@@ -55,9 +57,16 @@ function Start() external onlyOwner{
 
     nft.transferFrom(seller, address(this), nftId);
      started=true;
-     Time_left= endingBy-block.timestamp;
+     
 emit start("Auction has started");
 }
+
+function countDown()public returns(uint){
+     require(started, "Auctioning hasn't started");
+     Time_left= endingBy-block.timestamp; 
+     return Time_left;
+}
+
     function bid() payable external{
    require(started, "Auctioning hasn't started!!");
    require(!ended, "Auctioning has ended!!");
@@ -99,6 +108,9 @@ function end() external{
    }
    ended=true;
     emit Ended("The winner of the auctioning is", highestBidder);
+}
+
+
 }
 
 
