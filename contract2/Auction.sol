@@ -66,6 +66,9 @@ function countDown()public returns(uint){
      Time_left= endingBy-block.timestamp; 
      return Time_left;
 }
+function AllBidders() external view returns(address[] memory){
+    return bidders;
+}
 
     function bid() payable external{
    require(started, "Auctioning hasn't started!!");
